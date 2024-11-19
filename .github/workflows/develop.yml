@@ -39,7 +39,6 @@ jobs:
         uses: aevea/action-kaniko@v0.13.0
         with:
           tag: ${{ env.VERSION }}
-          image: iac
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
