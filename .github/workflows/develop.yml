@@ -14,7 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Configure
         id: config
@@ -26,13 +29,6 @@ jobs:
           VERSION="${OPENTOFU_VERSION}-${{ github.run_number }}"
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_OUTPUT
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
-
-      - name: Show config
-        id: show-config
-        run: |
-          echo "OPENTOFU_VERSION: ${OPENTOFU_VERSION}"
-          echo "TERRAGRUNT_VERSION: ${TERRAGRUNT_VERSION}"
-          echo "VERSION: ${VERSION}"
 
       - name: "Build image with tag ${{ env.VERSION }}"
         id: build
