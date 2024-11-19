@@ -33,3 +33,13 @@ jobs:
           echo "OPENTOFU_VERSION: ${OPENTOFU_VERSION}"
           echo "TERRAGRUNT_VERSION: ${TERRAGRUNT_VERSION}"
           echo "VERSION: ${VERSION}"
+
+      - name: "Build image with tag ${{ env.VERSION }}"
+        id: build
+        uses: aevea/action-kaniko@v0.13.0
+        with:
+          tag: ${{ env.VERSION }}
+          image: iac
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
