@@ -2,7 +2,7 @@
 # aaheiev/terragrunt-aws:0.0.1-1
 services:
   terragrunt:
-    image:        aaheiev/iac:1.8.5-1
+    image:        ghcr.io/aaheiev/iac:1.8.5-9
     platform:     linux/amd64
     stdin_open:   true
     tty:          true

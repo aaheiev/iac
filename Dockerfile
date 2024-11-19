@@ -1,6 +1,8 @@
 # FROM alpine:3.19
 FROM ruby:3.3.6-alpine3.20
 
+LABEL org.opencontainers.image.description infrastructure as code container image
+
 ARG OPENTOFU_VERSION=1.8.5
 ARG TERRAGRUNT_VERSION=0.68.16
 
