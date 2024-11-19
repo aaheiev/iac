@@ -1,0 +1,16 @@
+---
+# aaheiev/terragrunt-aws:0.0.1-1
+services:
+  terragrunt:
+    image:        aaheiev/iac:1.8.1-1
+    platform:     linux/amd64
+    stdin_open:   true
+    tty:          true
+    build:
+      dockerfile: Dockerfile
+#    environment:
+#      AWS_DEFAULT_REGION: us-west-2
+#    env_file:
+#      - ./.env
+    volumes:
+      - .:/workspace
