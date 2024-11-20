@@ -8,9 +8,5 @@ services:
     tty:          true
     build:
       dockerfile: Dockerfile
-#    environment:
-#      AWS_DEFAULT_REGION: us-west-2
-#    env_file:
-#      - ./.env
     volumes:
       - .:/workspace

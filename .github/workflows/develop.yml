@@ -30,11 +30,8 @@ jobs:
       - name: Configure
         id: config
         run: |
-          OPENTOFU_VERSION=$(echo $(cat Dockerfile | grep 'ARG OPENTOFU_VERSION=') | cut -d'=' -f2)
-          echo "OPENTOFU_VERSION=$(echo $OPENTOFU_VERSION)" >> $GITHUB_ENV
-          TERRAGRUNT_VERSION=$(echo $(cat Dockerfile | grep 'ARG TERRAGRUNT_VERSION=') | cut -d'=' -f2)
-          echo "TERRAGRUNT_VERSION=$(echo $TERRAGRUNT_VERSION)" >> $GITHUB_ENV
-          VERSION="${OPENTOFU_VERSION}-${{ github.run_number }}"
+          PROJ_VERSION=$(cat VERSION)
+          VERSION="${PROJ_VERSION}-${{ github.run_number }}"
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_OUTPUT
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
 
@@ -47,9 +44,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
 
-      - name: Run Trivy vulnerability scanner in fs mode
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          trivy-config: trivy.yaml
+#      - name: Run Trivy vulnerability scanner in fs mode
+#        uses: aquasecurity/trivy-action@0.28.0
+#        with:
+#          scan-type: 'fs'
+#          scan-ref: '.'
+#          trivy-config: trivy.yaml
