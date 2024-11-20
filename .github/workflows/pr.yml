@@ -1,19 +1,15 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Develop
+name: PR
+permissions:
+  contents: read
+  packages: write
 
 on:
-  push:
-    branches: [ "develop" ]
-permissions:
-#  actions: read|write|none
-#  checks: read|write|none
-#  contents: read|write|none
-#  deployments: read|write|none
-#  id-token: read|write|none
-#  issues: read|write|none
-#  discussions: read|write|none
-  packages: write
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build:
     name: Build
@@ -29,18 +25,23 @@ jobs:
         id: config
         run: |
           PROJ_VERSION=$(cat VERSION)
-          VERSION="${PROJ_VERSION}-${{ github.run_number }}"
+          VERSION=$(cat VERSION)
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_OUTPUT
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
 
-      - name: "Build image with tag ${{ env.VERSION }}"
+      - name: Build
         id: build
-        uses: aevea/action-kaniko@v0.14.0
-        with:
-          tag: ${{ env.VERSION }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: ghcr.io
+        run: |
+          echo "build version ${{ env.VERSION }}"
+
+#      - name: "Build image with tag ${{ env.VERSION }}"
+#        id: build
+#        uses: aevea/action-kaniko@v0.14.0
+#        with:
+#          tag: ${{ env.VERSION }}
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#          registry: ghcr.io
 
 #      - name: Run Trivy vulnerability scanner in fs mode
 #        uses: aquasecurity/trivy-action@0.28.0
