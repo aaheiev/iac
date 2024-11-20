@@ -26,7 +26,7 @@ jobs:
         id: config
         run: |
           PROJ_VERSION=$(cat VERSION)
-          VERSION="${PROJ_VERSION}-${{ github.run_number }}"
+          VERSION=$(cat VERSION)
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_OUTPUT
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
 
