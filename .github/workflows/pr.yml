@@ -1,0 +1,52 @@
+# This is a basic workflow to help you get started with Actions
+
+name: PR
+permissions:
+  contents: read
+  packages: write
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure
+        id: config
+        run: |
+          PROJ_VERSION=$(cat VERSION)
+          VERSION="${PROJ_VERSION}-${{ github.run_number }}"
+          echo "VERSION=$(echo $VERSION)" >> $GITHUB_OUTPUT
+          echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
+
+      - name: Build
+        id: build
+        run: |
+          echo "build version ${{ env.VERSION }}"
+
+#      - name: "Build image with tag ${{ env.VERSION }}"
+#        id: build
+#        uses: aevea/action-kaniko@v0.14.0
+#        with:
+#          tag: ${{ env.VERSION }}
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#          registry: ghcr.io
+
+#      - name: Run Trivy vulnerability scanner in fs mode
+#        uses: aquasecurity/trivy-action@0.28.0
+#        with:
+#          scan-type: 'fs'
+#          scan-ref: '.'
+#          trivy-config: trivy.yaml
