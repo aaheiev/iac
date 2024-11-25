@@ -24,10 +24,10 @@ jobs:
       - name: Run Trivy vulnerability scanner with rootfs command
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          scan-type: rootfs
-          scan-ref: rootfs-example-binary
+          scan-type: 'rootfs'
+          scan-ref: 'rootfs-example-binary'
           ignore-unfixed: true
-          format: sarif
+          format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL'
 
