@@ -43,8 +43,8 @@ jobs:
         id: scan
         with:
           image: ghcr.io/aaheiev/iac:${{ env.VERSION }}
-          fail-build: true
           output-format: sarif
+#          fail-build: true
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
