@@ -21,28 +21,36 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Trivy vulnerability scanner with rootfs command
-        uses: aquasecurity/trivy-action@0.28.0
+      - name: Configure
+        id: config
+        run: |
+          PROJ_VERSION=$(cat VERSION)
+          VERSION=$(cat VERSION)
+          echo "VERSION=$(echo $VERSION)" >> $GITHUB_OUTPUT
+          echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
+
+      - name: "Build image with tag ${{ env.VERSION }}"
+        id: build
+        uses: aevea/action-kaniko@v0.14.0
         with:
-          scan-type: 'rootfs'
-          scan-ref: 'rootfs-example-binary'
-          ignore-unfixed: true
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL'
+          tag: ${{ env.VERSION }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+
+      - name: Scan Image
+        uses: anchore/scan-action@v3
+        id: scan
+        with:
+          image: ghcr.io/aaheiev/iac:${{ env.VERSION }}
+          fail-build: true
+          output-format: sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
 
-#      - name: Configure
-#        id: config
-#        run: |
-#          PROJ_VERSION=$(cat VERSION)
-#          VERSION=$(cat VERSION)
-#          echo "VERSION=$(echo $VERSION)" >> $GITHUB_OUTPUT
-#          echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
 #
 #      - name: Build
 #        id: build
